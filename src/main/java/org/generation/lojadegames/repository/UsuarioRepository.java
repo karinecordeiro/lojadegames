@@ -1,6 +1,5 @@
 package org.generation.lojadegames.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.generation.lojadegames.model.Usuario;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
 	public Optional<Usuario> findByUsuario(String usuario);
-	
-	public List <Usuario> findAllByUsuarioContainingIgnoreCase (String usuario);
 	
 }
 	

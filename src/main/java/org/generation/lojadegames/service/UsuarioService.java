@@ -32,17 +32,19 @@ public class UsuarioService {
 	
 	//--------ATUALIZAR----------
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-        if (usuarioRepository.findById(usuario.getId()).isPresent()) { 
-        Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario()); 
-            if (buscaUsuario.isPresent()) { 
-                 if (buscaUsuario.get().getId() != usuario.getId()) 
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
-            }
-            usuario.setSenha(criptografarSenha(usuario.getSenha()));
-            return Optional.of(usuarioRepository.save(usuario));
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
-    }
+		
+		if(usuarioRepository.findById(usuario.getId()).isPresent()) 
+		{
+			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
+			if((buscaUsuario.isPresent()) && (buscaUsuario.get().getId() !=usuario.getId()))
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+			
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
+			return Optional.ofNullable(usuarioRepository.save(usuario));
+		}
+		
+			return Optional.empty();			
+	}
 	
 	//--------AUTENTICAR----------
 	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin){

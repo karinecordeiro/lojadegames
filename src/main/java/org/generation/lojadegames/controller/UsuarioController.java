@@ -43,10 +43,6 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> getById (@PathVariable Long id){
 		return usuarioRepository.findById(id).map(resp ->ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.notFound().build());			
-	}
-	@GetMapping("/usuario/{usuario}")
-	public ResponseEntity<List<Usuario>> getByUsuario(@PathVariable String usuario){
-		return ResponseEntity.ok(usuarioRepository.findAllByUsuarioContainingIgnoreCase(usuario));
 				
 	}
 	
@@ -60,10 +56,10 @@ public class UsuarioController {
 		return usuarioService.autenticarUsuario(usuarioLogin).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
-	@PutMapping("/atualizar")  
-    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario){
-        return usuarioService.atualizarUsuario(usuario).map(resp -> ResponseEntity.status(HttpStatus.OK).body(resp))
-        		.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	@PutMapping("/atualizar")
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario){
+		return usuarioService.atualizarUsuario(usuario).map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 	
 }
